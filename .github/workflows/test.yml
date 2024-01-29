@@ -27,6 +27,7 @@ jobs:
       - name: upload built files
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-actions
           path: ./dist
   deploy:
     runs-on: ubuntu-latest
