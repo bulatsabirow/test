@@ -1,43 +1,44 @@
+name: Deploy
+
 on:
   push:
     branches:
       - master
-    paths-ignore:
-      - './github/workflows/*'
-  workflow_dispatch:
 
-env:
-  NODE_JS_VERSION: 21
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
+
     steps:
-      - name: fetch repository code
-        uses: actions/checkout@v4
-      - name: install NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_JS_VERSION }}
-      - name: install project dependencies
-        run: npm ci
-      - name: setup Pages
-        uses: actions/configure-pages@v4
-      - name: build project
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Build project
         run: npm run build
-      - name: upload built files
+
+      - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
         with:
-          name: github-pages
+          name: production-files
           path: ./dist
+
   deploy:
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3
         with:
-          name: github-pages
+          name: production-files
           path: ./dist
 
       - name: Deploy to GitHub Pages
