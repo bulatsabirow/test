@@ -1,55 +1,8 @@
-#name: Deploy static content to Pages
-#
-#on:
-#  push:
-#    branches:
-#      - master
-#  workflow_dispatch:
-#
-#permissions:
-#  contents: read
-#  pages: write
-#  id-token: write
-#concurrency:
-#  group: 'pages'
-#  cancel-in-progress: true
-#
-#env:
-#  NODE_JS_VERSION: 21
-#
-#jobs:
-#  deploy:
-#    environment:
-#      name: github-pages
-#      url: ${{ steps.deployment.outputs.page_url }}
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Set up Node
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: ${{ env.NODE_JS_VERSION }}
-#          cache: 'npm'
-#      - name: Install dependencies
-#        run: npm ci
-#      - name: Build
-#        run: npm run build
-#      - name: Setup Pages
-#        uses: actions/configure-pages@v3
-#      - name: Upload artifact
-#        uses: actions/upload-pages-artifact@v2
-#        with:
-#          path: './dist'
-#      - name: Deploy to GitHub Pages
-#        id: deployment
-#        uses: actions/deploy-pages@v3
+name: Deploy Static Site on GitHub Pages service
 on:
   push:
     branches:
       - master
-    paths-ignore:
-      - './github/workflows/**'
   workflow_dispatch:
 
 env:
